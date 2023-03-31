@@ -21,6 +21,11 @@ public class Element implements IElement {
     int width;
     int height;
 
+    /**
+     * 是否可以销毁
+     */
+    boolean Destroyed = false;
+
     public Element() {
     }
 

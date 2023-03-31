@@ -1,5 +1,8 @@
 package cn.edu.ncepu.sa.GameView;
 
+import cn.edu.ncepu.sa.Model.Element;
+import cn.edu.ncepu.sa.Model.WarData;
+
 import javax.swing.*;
 import java.awt.*;
 
@@ -30,10 +33,10 @@ public class GamePanel extends JPanel {
         //shot.draw(g);
 
 
- /*       for (int i = 0; i < Director.nodes.size(); i++) {
-            Node node = Director.nodes.get(i);
-            node.draw(g2);//让每个节点都自我绘制
-        }*/
+        for (Element element : WarData.elements) {
+            element.draw(g2);//让每个节点都自我绘制
+        }
+
 
         String str = String.format("fps:%.2f", 100.0/*_frameRate*/);
         g.drawString(str, 10, 15);
