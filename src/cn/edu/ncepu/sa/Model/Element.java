@@ -42,6 +42,11 @@ public class Element implements IElement {
 
     }
 
+    public void destroy() {
+        /*Director.nodes.remove(this);
+        Scheduler.getInstance().unscheduleUpdate(this);*/
+    }
+
     /**
      * 向某方向移动一段距离
      *

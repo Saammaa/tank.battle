@@ -4,4 +4,6 @@ import java.awt.*;
 
 public interface IElement {
     public void draw(Graphics2D g);
+
+    public void destroy();
 }
