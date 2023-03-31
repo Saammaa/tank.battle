@@ -1,12 +1,21 @@
 package cn.edu.ncepu.sa.GameView;
 
+import cn.edu.ncepu.sa.Model.WarData;
+
 import javax.swing.*;
 
 public class GameView extends JFrame {
+    /**
+     * 数据区引用
+     */
+    WarData warData;
 
     GamePanel panel = new GamePanel();
 
-    public GameView() {
+    public GameView(WarData warData) {
+        this.warData = warData;
+        panel.setWarData(warData);
+
         this.setSize(860, 640);
         this.setLocationRelativeTo(null);
         //this.setResizable(false);
