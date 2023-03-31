@@ -9,7 +9,7 @@ import java.util.Iterator;
 public class WarData {
 
     public HashSet<Element> elements = new HashSet<>();
-    public Tank userTank = new Tank(200, 200, 0, 10, 0.1, 1);
+    public Tank userTank = new Tank(200, 200, 0, 100, 0.2, TankTeam.RED.ordinal());
 
     public WarData() {
         elements.add(userTank);
@@ -32,7 +32,9 @@ public class WarData {
         while (it.hasNext()) {
             Element tmp = it.next();
             if (tmp.Destroyed) {
-                it.remove();
+                if (tmp != userTank) {
+                    it.remove();
+                }
             }
         }
     }

@@ -22,6 +22,11 @@ public class Tank extends Element {
     public boolean moving = false;
 
     /**
+     * 移动步数
+     */
+    public long moveSteps = 0;
+
+    /**
      * 每秒移动速度,注意要比子弹慢一些
      */
     public double speed = 100;
@@ -85,12 +90,18 @@ public class Tank extends Element {
      * @param timeFlaps 流逝时间间隔
      */
     public void update(double timeFlaps) {
+        // 若已死亡，则不再动作
+        if (Destroyed) {
+            return;
+        }
+
         //生命回复
         recoverLife();
 
         //更新坦克位置
         if (moving) {
             double len = speed * timeFlaps;
+            moveSteps++;
             this.move(dir, len);
         }
     }
@@ -111,11 +122,11 @@ public class Tank extends Element {
         //System.out.println("画:"+x+","+y);
         Image img1 = null;
         Image img2 = null;
-        if (team == 1) {
+        if (team == TankTeam.RED.ordinal()) {
             img1 = ImageCache.get("tank_red");
             img2 = ImageCache.get("turret_red");
         }
-        if (team == 2) {
+        if (team == TankTeam.BLUE.ordinal()) {
             img1 = ImageCache.get("tank_blue");
             img2 = ImageCache.get("turret_blue");
         }

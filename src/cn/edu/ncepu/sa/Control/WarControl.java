@@ -1,10 +1,7 @@
 package cn.edu.ncepu.sa.Control;
 
 import cn.edu.ncepu.sa.GameView.GameView;
-import cn.edu.ncepu.sa.Model.Element;
-import cn.edu.ncepu.sa.Model.Shot;
-import cn.edu.ncepu.sa.Model.Tank;
-import cn.edu.ncepu.sa.Model.WarData;
+import cn.edu.ncepu.sa.Model.*;
 import cn.edu.ncepu.sa.utils.Utils;
 
 import java.awt.event.KeyAdapter;
@@ -54,10 +51,12 @@ public class WarControl extends Thread {
         t.y = 500;
         t.hp_recovery_per_sec = 0.1;//每秒回复*/
         // 建议写法
-        Tank t = new Tank(500, 500, 0, 10, 0.1, 2);
+        Tank t = new Tank(500, 500, 0, 50, 0.1, TankTeam.BLUE.ordinal());
+        t.moving = true;
         warData.elements.add(t);
 
-        Tank t2 = new Tank(300, 300, 0, 10, 0.1, 2);
+        Tank t2 = new Tank(300, 300, 0, 50, 0.1, TankTeam.BLUE.ordinal());
+        t2.moving = true;
         warData.elements.add(t2);
 
         Tank tank = warData.userTank;
@@ -70,6 +69,9 @@ public class WarControl extends Thread {
         MouseAdapter adapter = new MouseAdapter() {
             @Override
             public void mouseMoved(MouseEvent e) {
+                if (warData.userTank.Destroyed) {
+                    return;
+                }
 //                System.out.println(e.getX()+","+e.getY());
                 double x = e.getX() - 9;
                 double y = e.getY() - 38;
@@ -78,6 +80,10 @@ public class WarControl extends Thread {
 
             @Override
             public void mousePressed(MouseEvent e) {
+                if (tank.Destroyed) {
+                    tank.moving = false;
+                    return;
+                }
                 Shot shot = new Shot(tank, 200);
                 warData.elements.add(shot);
             }
@@ -91,25 +97,29 @@ public class WarControl extends Thread {
             @Override //键盘按下
             public void keyPressed(KeyEvent e) {
                 System.out.println(e.getKeyChar());
+                if (tank.Destroyed) {
+                    tank.moving = false;
+                    return;
+                }
                 switch (e.getKeyChar()) {
                     case 'w':
                     case 'W':
-                        tank.dir = 0;
+                        tank.dir = Directions.UP.getAngleValue();
                         tank.moving = true;
                         break;
                     case 'a':
                     case 'A':
-                        tank.dir = 270;
+                        tank.dir = Directions.LEFT.getAngleValue();
                         tank.moving = true;
                         break;
                     case 's':
                     case 'S':
-                        tank.dir = 180;
+                        tank.dir = Directions.DOWN.getAngleValue();
                         tank.moving = true;
                         break;
                     case 'd':
                     case 'D':
-                        tank.dir = 90;
+                        tank.dir = Directions.RIGHT.getAngleValue();
                         tank.moving = true;
                         break;
                 }
@@ -157,6 +167,48 @@ public class WarControl extends Thread {
         }
     }
 
+    // 地方坦克动起来
+    private void runEnemyTank() {
+        if (warData.userTank.Destroyed) {
+            return;
+        }
+
+        for (Element elemnet : warData.elements) {
+            // 找坦克
+            if (elemnet instanceof Tank) {
+                // 找敌方坦克
+                if (((Tank) elemnet).team == TankTeam.BLUE.ordinal()) {
+                    Tank t = (Tank) elemnet;
+                    if (t.x < 0) {
+                        t.dir = Directions.RIGHT.getAngleValue();
+                    }
+                    if (t.y < 0) {
+                        t.dir = Directions.DOWN.getAngleValue();
+                    }
+                    if (t.x >= win.width) {
+                        t.dir = Directions.LEFT.getAngleValue();
+                    }
+                    if (t.y >= win.height) {
+                        t.dir = Directions.UP.getAngleValue();
+                    }
+                    if (t.moveSteps > 50) {
+                        double random = Math.random() * 360;
+                        t.dir = random;
+                        t.turretDir = random;
+                        t.moving = true;
+                        t.moveSteps = 0;
+                        if (t.distance(warData.userTank) < 400) {
+                            t.turretDir = Utils.ppDir(t.x, t.y, warData.userTank.x, warData.userTank.y) + 90;
+                            Shot shot = new Shot(t, 200);
+                            warData.elements.add(shot);
+                            return;
+                        }
+                    }
+                }
+            }
+        }
+    }
+
     /**
      * 地图元素位置更新
      *
@@ -167,8 +219,6 @@ public class WarControl extends Thread {
             elemnet.update(timeFlaps);
         }
 
-        // 依据元素的状态，更新数据区
-        warData.updateDataSet();
     }
 
     /**
@@ -201,10 +251,14 @@ public class WarControl extends Thread {
                 float dt = _time * 0.001f;
 
                 //调度任务，如果有些任务计算量大，可以开线程池
+                runEnemyTank();
                 updatePositions(dt);
 
                 // 碰撞检测
                 CollisionDetection();
+
+                // 依据元素的状态，更新数据区
+                warData.updateDataSet();
 
                 // 刷新界面
                 win.update(dt);

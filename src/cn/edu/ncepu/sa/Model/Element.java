@@ -30,7 +30,7 @@ public class Element implements IElement {
     /**
      * 是否需要销毁，False：显示； True：删除
      */
-    boolean Destroyed = false;
+    public boolean Destroyed = false;
 
     public Element() {
     }
@@ -86,6 +86,20 @@ public class Element implements IElement {
         double a = this.x - target.x;
         double b = this.y - target.y;
         return Math.sqrt(a * a + b * b);
+
+    }
+
+    /**
+     * 与另一个元素的夹角
+     *
+     * @param target 目标元素
+     * @return
+     */
+    public double angle(Element target) {
+        double len_x = target.x - x;
+        double len_y = target.y - y;
+        double radian = Math.atan2(len_y, len_x);//弧度
+        return radian * 180 / Math.PI;//角度
 
     }
 

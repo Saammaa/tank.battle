@@ -18,6 +18,9 @@ public class GameView extends JFrame {
      */
     GamePanel panel = new GamePanel();
 
+    public int width = 860;
+    public int height = 640;
+
     /**
      * 初始化显示组件
      *
@@ -28,7 +31,7 @@ public class GameView extends JFrame {
         panel.setWarData(warData);
 
         // 窗体初始化和
-        this.setSize(860, 640);
+        this.setSize(width, height);
         this.setLocationRelativeTo(null);
         //this.setResizable(false);
         this.setTitle("坦克大战 V1.0");
@@ -39,9 +42,9 @@ public class GameView extends JFrame {
         int w = this.getContentPane().getSize().width;
         int h = this.getContentPane().getSize().height;
 
-        int cw = 860 - w;
-        int ch = 640 - h;
-        this.setSize(860 + cw, 640 + ch);
+        int cw = width - w;
+        int ch = height - h;
+        this.setSize(width + cw, height + ch);
     }
 
     // 私有数据区
