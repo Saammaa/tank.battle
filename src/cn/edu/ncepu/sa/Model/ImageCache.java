@@ -3,6 +3,7 @@ package cn.edu.ncepu.sa.Model;
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
 import java.io.File;
+import java.io.InputStream;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -48,7 +49,9 @@ public class ImageCache {
      */
     public static BufferedImage readImage(String path) {
         try {
-            return ImageIO.read(new File(path));
+            InputStream inputStream = ImageCache.class.getClassLoader().getResourceAsStream(path);
+            //return ImageIO.read(new File(path));
+            return ImageIO.read(inputStream);
         } catch (Exception e) {
             return null;
         }
