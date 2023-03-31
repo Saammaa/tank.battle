@@ -34,8 +34,8 @@ public class Tank extends Element {
     /**
      * 生命数，装甲
      */
-    public double hp = 60;
-    public double hpmax = 100;
+    public double hp = 600;
+    public double hpmax = 150;
 
     /**
      * 每秒回复生命

@@ -51,13 +51,17 @@ public class WarControl extends Thread {
         t.y = 500;
         t.hp_recovery_per_sec = 0.1;//每秒回复*/
         // 建议写法
-        Tank t = new Tank(500, 500, 0, 50, 0.1, TankTeam.BLUE.ordinal());
+        Tank t = new Tank(0, 500, 0, 150, 0.1, TankTeam.BLUE.ordinal());
         t.moving = true;
         warData.elements.add(t);
 
-        Tank t2 = new Tank(300, 300, 0, 50, 0.1, TankTeam.BLUE.ordinal());
+        Tank t2 = new Tank(500, 0, 0, 150, 0.1, TankTeam.BLUE.ordinal());
         t2.moving = true;
         warData.elements.add(t2);
+
+        Tank t3 = new Tank(600, 600, 0, 150, 0.1, TankTeam.BLUE.ordinal());
+        t3.moving = true;
+        warData.elements.add(t3);
 
         Tank tank = warData.userTank;
         /*tank.x = 200;
@@ -197,7 +201,7 @@ public class WarControl extends Thread {
                         t.turretDir = random;
                         t.moving = true;
                         t.moveSteps = 0;
-                        if (t.distance(warData.userTank) < 400) {
+                        if (t.distance(warData.userTank) < 800) {
                             t.turretDir = Utils.ppDir(t.x, t.y, warData.userTank.x, warData.userTank.y) + 90;
                             Shot shot = new Shot(t, 200);
                             warData.elements.add(shot);

@@ -9,7 +9,7 @@ import java.util.Iterator;
 public class WarData {
 
     public HashSet<Element> elements = new HashSet<>();
-    public Tank userTank = new Tank(200, 200, 0, 100, 0.2, TankTeam.RED.ordinal());
+    public Tank userTank = new Tank(600, 200, 0, 100, 0.2, TankTeam.RED.ordinal());
 
     public WarData() {
         elements.add(userTank);
