@@ -17,12 +17,18 @@ public class Element implements IElement {
      */
     public double y;
 
-
-    int width;
-    int height;
+    /**
+     * 宽度
+     */
+    public int width = 10;
 
     /**
-     * 是否可以销毁
+     * 高度
+     */
+    public int height = 10;
+
+    /**
+     * 是否需要销毁，False：显示； True：删除
      */
     boolean Destroyed = false;
 
@@ -30,15 +36,18 @@ public class Element implements IElement {
     }
 
     /**
-     * @param dt
+     * 使用子类的位置更新方法
+     *
+     * @param timeFlaps 流逝时间间隔
      */
-    public void update(float dt) {
+    public void update(double timeFlaps) {
 
     }
 
 
     /**
      * 在地图上绘制该元素
+     * 使用子类的绘制方法
      *
      * @param g
      */
@@ -47,9 +56,11 @@ public class Element implements IElement {
 
     }
 
+    /**
+     * 该元素生命周期结束，可以回收资源
+     */
     public void destroy() {
-        /*Director.nodes.remove(this);
-        Scheduler.getInstance().unscheduleUpdate(this);*/
+        Destroyed = true;   // 这会触发数据区中删除，该工作在控制器中完成
     }
 
     /**
@@ -79,7 +90,7 @@ public class Element implements IElement {
     }
 
     /*
-     * 指定中心点获取矩形
+     * 指定中心点获取矩形，弃用，碰撞检测使用了距离法
      */
     public Rectangle getRect() {
         return new Rectangle((int) (x - (width / 2)), (int) y - (height / 2), (int) width, (int) height);

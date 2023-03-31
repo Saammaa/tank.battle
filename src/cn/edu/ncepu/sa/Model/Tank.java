@@ -2,23 +2,70 @@ package cn.edu.ncepu.sa.Model;
 
 import java.awt.*;
 
+/**
+ * 坦克类
+ */
 public class Tank extends Element {
     /**
      * 坦克方向
      */
     public double dir = 90;
-    public double turretDir;//炮筒方向
-    public boolean moving = false;//是否在移动
-    public double speed = 100;//每秒移动速度
 
+    /**
+     * 炮筒方向
+     */
+    public double turretDir;
+
+    /**
+     * 是否在移动
+     */
+    public boolean moving = false;
+
+    /**
+     * 每秒移动速度,注意要比子弹慢一些
+     */
+    public double speed = 100;
+
+    /**
+     * 生命数，装甲
+     */
     public double hp = 60;
     public double hpmax = 100;
-    public double hphf = 1;//每秒回复生命
-    public int team = 1; //队伍，1红，2蓝
+
+    /**
+     * 每秒回复生命
+     */
+    public double hp_recovery_per_sec = 0.1;
+
+    /**
+     * 队伍，1红，2蓝
+     */
+    public int team = 1;
+
 
     public Tank() {
 
-        //Scheduler.getInstance().scheduleUpdate(this,0,false);
+    }
+
+    /**
+     * 构造坦克
+     *
+     * @param x                   x坐标
+     * @param y                   y坐标
+     * @param dir                 方向
+     * @param hp                  初始血量
+     * @param hp_recovery_per_sec 每秒恢复血量
+     * @param team                组别
+     */
+    public Tank(int x, int y, double dir, double hp, double hp_recovery_per_sec, int team) {
+        this.x = x;
+        this.y = y;
+
+        this.dir = dir;
+        this.speed = speed;
+        this.hp = hp;
+        this.hp_recovery_per_sec = hp_recovery_per_sec;
+        this.team = team;
     }
 
     /**
@@ -32,24 +79,27 @@ public class Tank extends Element {
         }
     }
 
-
-    public void update(float dt) {
+    /**
+     * 更新坦克位置
+     *
+     * @param timeFlaps 流逝时间间隔
+     */
+    public void update(double timeFlaps) {
         //生命回复
-        hp += (hphf * dt);
-        if (hp > hpmax) {
-            hp = hpmax;
-        }
+        recoverLife();
 
         //更新坦克位置
         if (moving) {
-            double len = speed * dt;
+            double len = speed * timeFlaps;
             this.move(dir, len);
         }
     }
 
-
-    public void recoverLife(float dt) {
-        hp += 5;
+    /**
+     * 定时自动回血
+     */
+    public void recoverLife() {
+        hp += hp_recovery_per_sec;
         if (hp > hpmax) {
             hp = hpmax;
         }

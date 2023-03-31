@@ -12,32 +12,60 @@ import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
+/**
+ * 游戏控制器
+ * 读取键盘、鼠标信息，控制主坦克
+ * 线程后台刷新子弹、坦克位置
+ * 线程后台计算碰撞检测
+ */
 public class WarControl extends Thread {
 
+    /**
+     * 显示组件引用
+     */
     GameView win;
 
+    /**
+     * 数据组件引用
+     */
     WarData warData;
 
+    /**
+     * 默认构造函数
+     */
     public WarControl() {
 
     }
 
+    /**
+     * 初始化控制器
+     *
+     * @param win     显示组件引用
+     * @param warData 数据组件引用
+     */
     public void StartWar(GameView win, WarData warData) {
         this.win = win;
         this.warData = warData;
 
-        Tank t = new Tank();
+        /*Tank t = new Tank();  老式写法
         t.team = 2;
+        t.hp = 10;
         t.x = 500;
         t.y = 500;
+        t.hp_recovery_per_sec = 0.1;//每秒回复*/
+        // 建议写法
+        Tank t = new Tank(500, 500, 0, 10, 0.1, 2);
         warData.elements.add(t);
 
+        Tank t2 = new Tank(300, 300, 0, 10, 0.1, 2);
+        warData.elements.add(t2);
+
         Tank tank = warData.userTank;
-        tank.x = 200;
+        /*tank.x = 200;
         tank.y = 200;
         tank.hp = 10;
         tank.hpmax = 100;
-        tank.hphf = 10;//每秒回复
+        tank.hp_recovery_per_sec = 0.1;//每秒回复*/
 
         MouseAdapter adapter = new MouseAdapter() {
             @Override
@@ -107,15 +135,20 @@ public class WarControl extends Thread {
         this.start();
     }
 
+    /**
+     * 碰撞检测，在线程中运行
+     */
     private void CollisionDetection() {
+        //遍历每一个子弹
         for (Element shot : warData.elements) {
             if (shot instanceof Shot) {
+                // 寻找每一辆坦克
                 for (Element tank : warData.elements) {
-                    //如果node是坦克，且不是这个子弹的主人
-                    if (tank instanceof Tank && tank != shot) {
+                    //进行敌我识别
+                    if ((tank instanceof Tank) && (tank != ((Shot) shot).tank)) {
+                        // 距离过近，则认为打中
                         if (shot.distance(tank) < 20) {
-                            Tank t = (Tank) tank;
-                            t.damage(10); //使坦克受到伤害
+                            ((Tank) tank).damage(((Shot) shot).damage); //使坦克受到伤害
                             shot.destroy(); //销毁当前子弹
                         }
                     }
@@ -124,6 +157,23 @@ public class WarControl extends Thread {
         }
     }
 
+    /**
+     * 地图元素位置更新
+     *
+     * @param timeFlaps 时间间隔
+     */
+    private void updatePositions(double timeFlaps) {
+        for (Element elemnet : warData.elements) {
+            elemnet.update(timeFlaps);
+        }
+
+        // 依据元素的状态，更新数据区
+        warData.updateDataSet();
+    }
+
+    /**
+     * 线程任务
+     */
     @Override
     public void run() {
         super.run();
@@ -131,10 +181,11 @@ public class WarControl extends Thread {
         long lastUpdate = System.currentTimeMillis();//当前系统时间
         int fps = 60;//理论帧数
         while (true) {
-            long interval = 1000 / 60;//理论间隔
+            long interval = 1000 / fps;//理论间隔
             long curr = System.currentTimeMillis();
             long _time = curr - lastUpdate;
             if (_time < interval) {
+                // 不到刷新时间，休眠
                 try {
                     Thread.sleep(1);
                 } catch (Exception e) {
@@ -142,11 +193,20 @@ public class WarControl extends Thread {
                 }
 
             } else {
+                // 更新游戏状态
+
                 lastUpdate = curr;
+
+                // 流逝时间
                 float dt = _time * 0.001f;
-                //推动调度器
+
+                //调度任务，如果有些任务计算量大，可以开线程池
+                updatePositions(dt);
+
+                // 碰撞检测
                 CollisionDetection();
-                //Scheduler.getInstance().tick(dt);  //两帧之间的间隔 （秒）
+
+                // 刷新界面
                 win.update(dt);
             }
 

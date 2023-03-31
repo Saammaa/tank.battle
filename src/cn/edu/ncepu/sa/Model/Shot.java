@@ -2,25 +2,50 @@ package cn.edu.ncepu.sa.Model;
 
 import java.awt.*;
 
+/**
+ * 子弹类
+ */
 public class Shot extends Element {
-    public double dir;//移动方向
-    public double speed = 200.0;//移动速度（秒）
-    public Tank tank;//打出这个子弹的坦克
+    /**
+     * 移动方向
+     */
+    public double dir;
 
+    /**
+     * 移动速度（秒）
+     */
+    public double speed = 200.0;
+
+    /**
+     * 子弹伤害
+     */
+    public double damage = 20.0;
+
+    /**
+     * 打出这个子弹的坦克引用，用来敌我识别
+     */
+    public Tank tank;
+
+    /**
+     * 构造函数
+     *
+     * @param tank  发射子弹的坦克
+     * @param speed 子弹速度
+     */
     public Shot(Tank tank, double speed) {
-        //super();//会默认调用父类的无参构造
         this.tank = tank;
         this.x = tank.x;
         this.y = tank.y;
         this.dir = tank.turretDir;
         this.speed = speed;
-        //Scheduler.getInstance().scheduleUpdate(this,0,false);
     }
 
-    //每一帧都会执行
-    public void update(float dt) {
+    /**
+     * 更新子弹位置；每一帧都会执行
+     */
+    public void update(double timeFlaps) {
         //计算新坐标
-        double len = speed * dt;
+        double len = speed * timeFlaps;
         this.move(dir, len);
 
         //超出范围的无效子弹
@@ -28,13 +53,6 @@ public class Shot extends Element {
             this.destroy();
         }
     }
-
-
-
-   /* public void destroy(){
-        Director.nodes.remove(this);
-        Scheduler.getInstance().unscheduleUpdate(this);
-    }*/
 
     @Override
     public void draw(Graphics2D g2) {
