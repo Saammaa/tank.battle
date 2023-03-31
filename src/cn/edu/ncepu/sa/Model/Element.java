@@ -17,6 +17,10 @@ public class Element implements IElement {
      */
     public double y;
 
+
+    int width;
+    int height;
+
     public Element() {
     }
 
@@ -62,5 +66,12 @@ public class Element implements IElement {
         double b = this.y - target.y;
         return Math.sqrt(a * a + b * b);
 
+    }
+
+    /*
+     * 指定中心点获取矩形
+     */
+    public Rectangle getRect() {
+        return new Rectangle((int) (x - (width / 2)), (int) y - (height / 2), (int) width, (int) height);
     }
 }
