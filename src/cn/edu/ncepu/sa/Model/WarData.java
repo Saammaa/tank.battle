@@ -15,6 +15,31 @@ public class WarData {
 
     public WarData() {
         elements.add(userTank);
+
+        AddSomeEnemyTanks();
+    }
+
+    public void AddSomeEnemyTanks() {
+// 建议写法
+        Tank t = new Tank(0, 500, 0, 200, 0.1, TankTeam.BLUE.ordinal());
+        t.moving = true;
+        elements.add(t);
+
+        Tank t2 = new Tank(500, 0, 0, 200, 0.1, TankTeam.BLUE.ordinal());
+        t2.moving = true;
+        elements.add(t2);
+
+        Tank t3 = new Tank(600, 600, 0, 200, 0.1, TankTeam.BLUE.ordinal());
+        t3.moving = true;
+        elements.add(t3);
+
+        Tank t4 = new Tank(600, 200, 0, 200, 0.1, TankTeam.BLUE.ordinal());
+        t4.moving = true;
+        elements.add(t4);
+
+        Tank t5 = new Tank(500, 300, 0, 200, 0.1, TankTeam.BLUE.ordinal());
+        t5.moving = true;
+        elements.add(t5);
     }
 
     /**

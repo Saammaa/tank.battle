@@ -43,43 +43,7 @@ public class WarControl extends Thread {
     public void StartWar(GameView win, WarData warData) {
         this.win = win;
         this.warData = warData;
-
-        /*Tank t = new Tank();  老式写法
-        t.team = 2;
-        t.hp = 10;
-        t.x = 500;
-        t.y = 500;
-        t.hp_recovery_per_sec = 0.1;//每秒回复*/
-        // 建议写法
-        Tank t = new Tank(0, 500, 0, 200, 0.1, TankTeam.BLUE.ordinal());
-        t.moving = true;
-        warData.elements.add(t);
-
-        Tank t2 = new Tank(500, 0, 0, 200, 0.1, TankTeam.BLUE.ordinal());
-        t2.moving = true;
-        warData.elements.add(t2);
-
-        Tank t3 = new Tank(600, 600, 0, 200, 0.1, TankTeam.BLUE.ordinal());
-        t3.moving = true;
-        warData.elements.add(t3);
-
-        Tank t4 = new Tank(600, 200, 0, 200, 0.1, TankTeam.BLUE.ordinal());
-        t4.moving = true;
-        warData.elements.add(t4);
-
-        Tank t5 = new Tank(500, 300, 0, 200, 0.1, TankTeam.BLUE.ordinal());
-        t5.moving = true;
-        warData.elements.add(t5);
-
-        warData.elements.add(t3);
-        warData.elements.add(t4);
         Tank tank = warData.userTank;
-        /*tank.x = 200;
-        tank.y = 200;
-        tank.hp = 10;
-        tank.hpmax = 100;
-        tank.hp_recovery_per_sec = 0.1;//每秒回复*/
-
         MouseAdapter adapter = new MouseAdapter() {
             @Override
             public void mouseMoved(MouseEvent e) {
