@@ -18,7 +18,14 @@ public class GameView extends JFrame {
      */
     GamePanel panel = new GamePanel();
 
+    /**
+     * 画布宽度
+     */
     public int width = 860;
+
+    /**
+     * 画布高度
+     */
     public int height = 640;
 
     /**

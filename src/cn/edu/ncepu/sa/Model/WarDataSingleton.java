@@ -1,7 +1,7 @@
 package cn.edu.ncepu.sa.Model;
 
 /**
- * 数据组件单例类方法
+ * 数据组件单例类方法，单例类相当于全局变量，谨慎使用
  */
 public class WarDataSingleton {
 

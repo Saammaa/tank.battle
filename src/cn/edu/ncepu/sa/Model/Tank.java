@@ -137,6 +137,7 @@ public class Tank extends Element {
         g.drawImage(img1, -18, -19, null);
         g.rotate(Math.toRadians(-dir));
 
+        // 绘制血条
         g.drawRect(-22, -34, 44, 8);
         g.setColor(Color.RED);
         int whp = (int) (43.08 * (hp / hpmax));
