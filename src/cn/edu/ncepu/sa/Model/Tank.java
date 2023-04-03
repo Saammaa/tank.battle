@@ -29,13 +29,13 @@ public class Tank extends Element {
     /**
      * 每秒移动速度,注意要比子弹慢一些
      */
-    public double speed = 100;
+    public double speed = 200;
 
     /**
      * 生命数，装甲
      */
     public double hp = 600;
-    public double hpmax = 150;
+    public double hpmax = 200;
 
     /**
      * 每秒回复生命

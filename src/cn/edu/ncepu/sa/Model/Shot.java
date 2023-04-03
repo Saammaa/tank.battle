@@ -14,13 +14,12 @@ public class Shot extends Element {
     /**
      * 移动速度（秒）
      */
-    public double speed = 200.0;
+    public double speed = 220.0;
 
     /**
      * 子弹伤害
      */
     public double damage = 20.0;
-
     /**
      * 打出这个子弹的坦克引用，用来敌我识别
      */

@@ -51,18 +51,28 @@ public class WarControl extends Thread {
         t.y = 500;
         t.hp_recovery_per_sec = 0.1;//每秒回复*/
         // 建议写法
-        Tank t = new Tank(0, 500, 0, 150, 0.1, TankTeam.BLUE.ordinal());
+        Tank t = new Tank(0, 500, 0, 200, 0.1, TankTeam.BLUE.ordinal());
         t.moving = true;
         warData.elements.add(t);
 
-        Tank t2 = new Tank(500, 0, 0, 150, 0.1, TankTeam.BLUE.ordinal());
+        Tank t2 = new Tank(500, 0, 0, 200, 0.1, TankTeam.BLUE.ordinal());
         t2.moving = true;
         warData.elements.add(t2);
 
-        Tank t3 = new Tank(600, 600, 0, 150, 0.1, TankTeam.BLUE.ordinal());
+        Tank t3 = new Tank(600, 600, 0, 200, 0.1, TankTeam.BLUE.ordinal());
         t3.moving = true;
         warData.elements.add(t3);
 
+        Tank t4 = new Tank(600, 200, 0, 200, 0.1, TankTeam.BLUE.ordinal());
+        t4.moving = true;
+        warData.elements.add(t4);
+
+        Tank t5 = new Tank(500, 300, 0, 200, 0.1, TankTeam.BLUE.ordinal());
+        t5.moving = true;
+        warData.elements.add(t5);
+
+        warData.elements.add(t3);
+        warData.elements.add(t4);
         Tank tank = warData.userTank;
         /*tank.x = 200;
         tank.y = 200;
@@ -171,7 +181,10 @@ public class WarControl extends Thread {
         }
     }
 
-    // 地方坦克动起来
+    /**
+     * 地方坦克动起来,思考，这些代码放到哪里比较好
+     */
+
     private void runEnemyTank() {
         if (warData.userTank.Destroyed) {
             return;
@@ -255,11 +268,15 @@ public class WarControl extends Thread {
                 float dt = _time * 0.001f;
 
                 //调度任务，如果有些任务计算量大，可以开线程池
-                runEnemyTank();
-                updatePositions(dt);
+                //runEnemyTank();
+                warData.runEnemyTank(win.width, win.height);
+
+                //updatePositions(dt);
+                warData.updatePositions(dt);
 
                 // 碰撞检测
-                CollisionDetection();
+                // CollisionDetection();
+                warData.CollisionDetection();
 
                 // 依据元素的状态，更新数据区
                 warData.updateDataSet();
