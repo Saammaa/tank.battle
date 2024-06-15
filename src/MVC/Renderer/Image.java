@@ -1,4 +1,4 @@
-package MVC.View;
+package MVC.Renderer;
 
 import java.util.Map;
 import java.util.HashMap;

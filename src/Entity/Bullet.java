@@ -1,55 +1,33 @@
 package Entity;
 
-import MVC.Model.Element;
-import MVC.View.Image;
+import MVC.Entity;
+import View.BulletView;
 
-import java.awt.*;
-
-public class Bullet extends Element {
-    // 移动方向
-    public double direction;
-
-    // 移动速度（秒）
-    public double speed;
-
-    // 子弹伤害
-    public double damage = 20.0;
-
-    // 子弹发出者
-    public Tank tank;
+public class Bullet extends Entity {
+    public Tank shooterTank;
 
     /**
-     * 构造函数
+     * 构造函数。
      *
-     * @param tank  发射子弹的坦克
-     * @param speed 子弹速度
+     * @param shooterTank  发射该子弹的父坦克对象
+     * @param speed         子弹速度
      */
-    public Bullet(Tank tank, double speed) {
-        this.tank = tank;
-        this.x = tank.x;
-        this.y = tank.y;
-        this.direction = tank.turretDir;
+    public Bullet(Tank shooterTank, double speed) {
+        // 初始化伤害与速度属性
         this.speed = speed;
-    }
+        this.damage = 20.0;
 
-    /**
-     * 于每一帧更新子弹位置。
-     */
-    public void update(double timeFlaps) {
-        // 计算新坐标
-        double len = speed * timeFlaps;
-        this.move(direction, len);
+        // 初始化方向与生成子弹的对象
+        this.shooterTank = shooterTank;
+        this.direction = shooterTank.turretDirection;
 
-        // 超出范围的无效子弹
-        if (x < -100 || x > 2000 || y < -100 || y > 2000) {
-            this.destroy();
-        }
-    }
-
-    @Override
-    public void draw(Graphics2D g2) {
-        Graphics2D g = (Graphics2D) g2.create();
-        g.translate(x, y);
-        g.drawImage(Image.get("shot"), -6, -6, null);
+        // 初始化子弹视图
+        this.view = new BulletView(
+                this,
+                shooterTank.view.x,
+                shooterTank.view.y,
+                this.direction,
+                this.speed
+        );
     }
 }

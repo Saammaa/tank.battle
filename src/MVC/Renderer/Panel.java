@@ -1,18 +1,18 @@
-package MVC.View;
+package MVC.Renderer;
 
-import MVC.Model.Element;
-import MVC.Model.BattleData;
+import MVC.Model.Battle;
+import MVC.View;
 
 import javax.swing.*;
 import java.awt.*;
 
 public class Panel extends JPanel {
-    private BattleData battleData;
+    private Battle battle;
 
     private double frameRate = 0.0;
 
-    public void setWarData(BattleData battleData) {
-        this.battleData = battleData;
+    public void setWarData(Battle battle) {
+        this.battle = battle;
     }
 
     public void setFrameRate(double frameRate) {
@@ -25,8 +25,8 @@ public class Panel extends JPanel {
         Graphics2D graphics2D = (Graphics2D) graphics;
 
         // 令每个游戏元素节点自我绘制
-        if (battleData != null && !battleData.elements.isEmpty()) {
-            for (Element element : battleData.elements) element.draw(graphics2D);
+        if (battle != null && !battle.views.isEmpty()) {
+            for (View view : battle.views) view.draw(graphics2D);
         }
 
         // 显示帧率

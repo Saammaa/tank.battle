@@ -1,31 +1,16 @@
 package Entity;
 
-import MVC.Model.Element;
-import MVC.View.Image;
+import MVC.Entity;
+import View.TankView;
 
-import java.awt.*;
-
-public class Tank extends Element {
-	// 坦克方向
-	public double direction;
-
+public class Tank extends Entity {
 	// 炮筒方向
-	public double turretDir;
+	public double turretDirection;
 
-	// 是否在移动
-	public boolean moving = false;
-
-	// 移动步数
+	// 移动步长
 	public long moveSteps = 0;
 
-	// 每秒移动速度，注意要比子弹慢一些
-	public double speed = 200;
-
-	public double hp;
-	public double maxHP = 200;
-
-	// 每秒回复生命
-	public double hpRecoverySpeed;
+	public TankView view;
 
 	/**
 	 * 队伍，一红二蓝
@@ -36,78 +21,35 @@ public class Tank extends Element {
 			int x,
 			int y,
 			double direction,
-			double hp,
-			double hpRecoverySpeed,
+			double health,
+			double healthRecoverySpeed,
 			int team
 	) {
-		this.x = x;
-		this.y = y;
-
-		this.direction = direction;
-		this.hp = hp;
-		this.hpRecoverySpeed = hpRecoverySpeed;
 		this.team = team;
+		this.speed = 200;
+		this.maxHealth = 200;
+
+		this.health = health;
+		this.direction = direction;
+		this.healthRecoverySpeed = healthRecoverySpeed;
+
+		this.view = new TankView(this, x, y, direction, speed);
+	}
+
+	public void setMoving(boolean isMoving) {
+		this.view.moving = this.moving = isMoving;
 	}
 
 	public void damage(double damageCount) {
-		this.hp -= damageCount;
-		if (this.hp <= 0) this.destroy();
+		this.health -= damageCount;
+		if (this.health <= 0) this.view.destroy();
 	}
 
-	/**
-	 * 更新坦克位置。
-	 *
-	 * @param timeFlaps 流逝时间间隔
-	 */
-	public void update(double timeFlaps) {
-		if (destroyed) return;
+	public void recoverHealth() {
+		this.health += healthRecoverySpeed;
 
-		recoverLife();
-
-		if (moving) {
-			double len = speed * timeFlaps;
-			moveSteps++;
-			this.move(direction, len);
+		if (this.health > this.maxHealth) {
+			this.health = this.maxHealth;
 		}
-	}
-
-	/**
-	 * 定时自动回血
-	 */
-	public void recoverLife() {
-		hp += hpRecoverySpeed;
-		if (hp > maxHP) hp = maxHP;
-	}
-
-	@Override
-	public void draw(Graphics2D g2) {
-		java.awt.Image img1 = null;
-		java.awt.Image img2 = null;
-
-		if (team == Team.RED.ordinal()) {
-			img1 = Image.get("tank_red");
-			img2 = Image.get("turret_red");
-		}
-
-		if (team == Team.BLUE.ordinal()) {
-			img1 = Image.get("tank_blue");
-			img2 = Image.get("turret_blue");
-		}
-
-		Graphics2D g = (Graphics2D) g2.create();
-		g.translate(x, y);
-
-		g.rotate(Math.toRadians(direction));
-		g.drawImage(img1, -18, -19, null);
-		g.rotate(Math.toRadians(-direction));
-
-		g.drawRect(-22, -34, 44, 8);
-		g.setColor(Color.RED);
-
-		int currentHPWidth = (int) (43.08 * (hp / maxHP));
-
-		g.fillRect(-21, -33, currentHPWidth, 7);
-		g.rotate(Math.toRadians(this.turretDir));
-		g.drawImage(img2, -32, -32, null);
 	}
 }

@@ -1,10 +1,9 @@
-package MVC.Controller;
+package MVC;
 
-import MVC.Model.Directions;
-import Entity.Bullet;
-import Entity.Tank;
-import MVC.Model.BattleData;
-import MVC.View.Content;
+import Entity.*;
+import MVC.Model.*;
+
+import MVC.Renderer.Content;
 import Utilities.Coordinate;
 
 import java.awt.event.KeyAdapter;
@@ -12,40 +11,35 @@ import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
-/**
- * 1. 读取键盘、鼠标信息，控制主坦克
- * 2. 线程后台刷新子弹、坦克位置
- * 3. 线程后台计算碰撞检测
- */
-public class Battle extends Thread {
+public class Controller extends Thread {
     Content view;
 
-    BattleData data;
+    Battle battleData;
 
-    public Battle() {}
+    public Controller() {}
 
-    public void start(Content content, BattleData battleData) {
+    public void start(Content content, Battle battle) {
         this.view = content;
-        this.data = battleData;
+        this.battleData = battle;
 
-        Tank tank = battleData.userTank;
+        Tank tank = battle.userTank;
         MouseAdapter adapter = new MouseAdapter() {
             @Override
             public void mouseMoved(MouseEvent e) {
-                if (battleData.userTank.destroyed) return;
+                if (battle.userTank.isDestroyed()) return;
                 double x = e.getX() - 9;
                 double y = e.getY() - 38;
-                tank.turretDir = Coordinate.getDirectionBetweenPoints(tank.x, tank.y, x, y) + 90;
+                tank.turretDirection = Coordinate.getDirectionBetweenPoints(tank.view.x, tank.view.y, x, y) + 90;
             }
 
             @Override
             public void mousePressed(MouseEvent e) {
-                if (tank.destroyed) {
+                if (tank.isDestroyed()) {
                     tank.moving = false;
                     return;
                 }
                 Bullet bullet = new Bullet(tank, 200);
-                battleData.elements.add(bullet);
+                battle.views.add(bullet.view);
             }
         };
 
@@ -56,8 +50,8 @@ public class Battle extends Thread {
         content.addKeyListener(new KeyAdapter() {
             @Override
             public void keyPressed(KeyEvent e) {
-                if (tank.destroyed) {
-                    tank.moving = false;
+                if (tank.isDestroyed()) {
+                    tank.setMoving(false);
                     return;
                 }
 
@@ -65,22 +59,22 @@ public class Battle extends Thread {
                     case 'w':
                     case 'W':
                         tank.direction = Directions.UP.getAngleValue();
-                        tank.moving = true;
+                        tank.setMoving(true);
                         break;
                     case 'a':
                     case 'A':
                         tank.direction = Directions.LEFT.getAngleValue();
-                        tank.moving = true;
+                        tank.setMoving(true);
                         break;
                     case 's':
                     case 'S':
                         tank.direction = Directions.DOWN.getAngleValue();
-                        tank.moving = true;
+                        tank.setMoving(true);
                         break;
                     case 'd':
                     case 'D':
                         tank.direction = Directions.RIGHT.getAngleValue();
-                        tank.moving = true;
+                        tank.setMoving(true);
                         break;
                 }
             }
@@ -96,7 +90,7 @@ public class Battle extends Thread {
                     case 'S':
                     case 'd':
                     case 'D':
-                        tank.moving = false;
+                        tank.setMoving(false);
                         break;
                 }
             }
@@ -105,9 +99,6 @@ public class Battle extends Thread {
         this.start();
     }
 
-    /**
-     * 线程任务
-     */
     @Override
     public void run() {
         super.run();
@@ -131,15 +122,15 @@ public class Battle extends Thread {
                 float dt = _time * 0.001f;
 
                 // 调度任务，如果有些任务计算量大，可以开线程池
-                data.runEnemyTank(view.width, view.height);
+                battleData.runEnemyTank(view.width, view.height);
 
-                data.updatePositions(dt);
+                battleData.updatePositions(dt);
 
                 // 碰撞检测
-                data.collisionDetection();
+                battleData.collisionDetection();
 
                 // 依据元素的状态，更新数据区
-                data.updateDataset();
+                battleData.updateDataset();
 
                 // 刷新界面
                 view.update(dt);

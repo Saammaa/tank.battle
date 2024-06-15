@@ -1,13 +1,13 @@
-import MVC.Controller.Battle;
-import MVC.View.Content;
-import MVC.Model.BattleData;
+import MVC.Model.Battle;
+import MVC.Renderer.Content;
+import MVC.Controller;
 
 public class Main {
 	public static void main(String[] args) {
-		BattleData battleData	= new BattleData();
-		Content content			= new Content(battleData);
-		Battle Battle			= new Battle();
+		Battle battle = new Battle();
+		Content content = new Content(battle);
+		Controller Controller = new Controller();
 
-		Battle.start(content, battleData);
+		Controller.start(content, battle);
 	}
 }
