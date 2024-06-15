@@ -14,32 +14,36 @@ import java.awt.event.MouseEvent;
 public class Controller extends Thread {
     Content view;
 
-    Battle battleData;
+    Battleground battleground;
 
-    public Controller() {}
-
-    public void start(Content content, Battle battle) {
+    public void start(Content content, Battleground battleground) {
         this.view = content;
-        this.battleData = battle;
+        this.battleground = battleground;
 
-        Tank tank = battle.userTank;
+        Tank userTank = battleground.userTank;
+
         MouseAdapter adapter = new MouseAdapter() {
             @Override
             public void mouseMoved(MouseEvent e) {
-                if (battle.userTank.isDestroyed()) return;
+                if (battleground.userTank.isDestroyed()) return;
+
                 double x = e.getX() - 9;
                 double y = e.getY() - 38;
-                tank.turretDirection = Coordinate.getDirectionBetweenPoints(tank.view.x, tank.view.y, x, y) + 90;
+
+                userTank.turretDirection = Coordinate.getDirectionBetweenPoints(
+                        userTank.view.x, userTank.view.y, x, y
+                ) + 90;
             }
 
             @Override
             public void mousePressed(MouseEvent e) {
-                if (tank.isDestroyed()) {
-                    tank.moving = false;
+                if (userTank.isDestroyed()) {
+                    userTank.view.setMoving(false);
                     return;
                 }
-                Bullet bullet = new Bullet(tank, 200);
-                battle.views.add(bullet.view);
+
+                Bullet bullet = new Bullet(userTank, 200);
+                battleground.bullets.add(bullet);
             }
         };
 
@@ -50,31 +54,31 @@ public class Controller extends Thread {
         content.addKeyListener(new KeyAdapter() {
             @Override
             public void keyPressed(KeyEvent e) {
-                if (tank.isDestroyed()) {
-                    tank.setMoving(false);
+                if (userTank.isDestroyed()) {
+                    userTank.view.setMoving(false);
                     return;
                 }
 
                 switch (e.getKeyChar()) {
                     case 'w':
                     case 'W':
-                        tank.direction = Directions.UP.getAngleValue();
-                        tank.setMoving(true);
+                        userTank.view.setDirection(Directions.UP.getAngleValue());
+                        userTank.view.setMoving(true);
                         break;
                     case 'a':
                     case 'A':
-                        tank.direction = Directions.LEFT.getAngleValue();
-                        tank.setMoving(true);
+                        userTank.view.setDirection(Directions.LEFT.getAngleValue());
+                        userTank.view.setMoving(true);
                         break;
                     case 's':
                     case 'S':
-                        tank.direction = Directions.DOWN.getAngleValue();
-                        tank.setMoving(true);
+                        userTank.view.setDirection(Directions.DOWN.getAngleValue());
+                        userTank.view.setMoving(true);
                         break;
                     case 'd':
                     case 'D':
-                        tank.direction = Directions.RIGHT.getAngleValue();
-                        tank.setMoving(true);
+                        userTank.view.setDirection(Directions.RIGHT.getAngleValue());
+                        userTank.view.setMoving(true);
                         break;
                 }
             }
@@ -90,7 +94,7 @@ public class Controller extends Thread {
                     case 'S':
                     case 'd':
                     case 'D':
-                        tank.setMoving(false);
+                        userTank.view.setMoving(false);
                         break;
                 }
             }
@@ -122,15 +126,16 @@ public class Controller extends Thread {
                 float dt = _time * 0.001f;
 
                 // 调度任务，如果有些任务计算量大，可以开线程池
-                battleData.runEnemyTank(view.width, view.height);
+                battleground.updateEnemies(view.width, view.height);
 
-                battleData.updatePositions(dt);
+                battleground.updateTankPositions(dt);
+                battleground.updateBulletPositions(dt);
 
                 // 碰撞检测
-                battleData.collisionDetection();
+                battleground.detectCollision();
 
                 // 依据元素的状态，更新数据区
-                battleData.updateDataset();
+                battleground.updateDataset();
 
                 // 刷新界面
                 view.update(dt);

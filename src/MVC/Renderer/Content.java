@@ -2,10 +2,10 @@ package MVC.Renderer;
 
 import javax.swing.*;
 
-import MVC.Model.Battle;
+import MVC.Model.Battleground;
 
 public class Content extends JFrame {
-	Battle battle;
+	Battleground battle;
 
 	Panel panel = new Panel();
 
@@ -24,7 +24,7 @@ public class Content extends JFrame {
 	 *
 	 * @param battle 数据区引用
 	 */
-	public Content(Battle battle) {
+	public Content(Battleground battle) {
 		this.battle = battle;
 		panel.setWarData(battle);
 

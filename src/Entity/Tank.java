@@ -36,10 +36,6 @@ public class Tank extends Entity {
 		this.view = new TankView(this, x, y, direction, speed);
 	}
 
-	public void setMoving(boolean isMoving) {
-		this.view.moving = this.moving = isMoving;
-	}
-
 	public void damage(double damageCount) {
 		this.health -= damageCount;
 		if (this.health <= 0) this.view.destroy();

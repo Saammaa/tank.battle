@@ -1,17 +1,18 @@
 package MVC.Renderer;
 
-import MVC.Model.Battle;
-import MVC.View;
+import Entity.Bullet;
+import Entity.Tank;
+import MVC.Model.Battleground;
 
 import javax.swing.*;
 import java.awt.*;
 
 public class Panel extends JPanel {
-    private Battle battle;
+    private Battleground battle;
 
     private double frameRate = 0.0;
 
-    public void setWarData(Battle battle) {
+    public void setWarData(Battleground battle) {
         this.battle = battle;
     }
 
@@ -25,8 +26,9 @@ public class Panel extends JPanel {
         Graphics2D graphics2D = (Graphics2D) graphics;
 
         // 令每个游戏元素节点自我绘制
-        if (battle != null && !battle.views.isEmpty()) {
-            for (View view : battle.views) view.draw(graphics2D);
+        if (battle != null) {
+            for (Tank tank : battle.tanks) tank.view.draw(graphics2D);
+            for (Bullet bullet : battle.bullets) bullet.view.draw(graphics2D);
         }
 
         // 显示帧率

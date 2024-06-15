@@ -1,10 +1,10 @@
-import MVC.Model.Battle;
+import MVC.Model.Battleground;
 import MVC.Renderer.Content;
 import MVC.Controller;
 
 public class Main {
 	public static void main(String[] args) {
-		Battle battle = new Battle();
+		Battleground battle = new Battleground();
 		Content content = new Content(battle);
 		Controller Controller = new Controller();
 

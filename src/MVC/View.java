@@ -32,7 +32,7 @@ public class View {
 	public void draw(Graphics2D g) {}
 
 	public void destroy() {
-		destroyed = true;
+		this.destroyed = true;
 	}
 
 	/**
@@ -56,5 +56,13 @@ public class View {
 		double a = this.x - target.x;
 		double b = this.y - target.y;
 		return Math.sqrt(a * a + b * b);
+	}
+
+	public void setMoving(boolean isMoving) {
+		this.moving = isMoving;
+	}
+
+	public void setDirection(double direction) {
+		this.direction = direction;
 	}
 }
