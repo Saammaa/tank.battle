@@ -1,7 +1,7 @@
-package Entity;
+package engine.entity;
 
-import MVC.Entity;
-import View.TankView;
+import mvc.Entity;
+import engine.view.TankView;
 
 public class Tank extends Entity {
 	// 炮筒方向

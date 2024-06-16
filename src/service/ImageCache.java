@@ -1,4 +1,4 @@
-package MVC.Renderer;
+package service;
 
 import java.util.Map;
 import java.util.HashMap;
@@ -7,7 +7,7 @@ import java.io.InputStream;
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
 
-public class Image {
+public class ImageCache {
 	private static final Map<String, BufferedImage> map = new HashMap<>();
 
 	public static BufferedImage get(String key) {
@@ -21,7 +21,7 @@ public class Image {
 
 	public static BufferedImage read(String path) {
 		try {
-			InputStream inputStream = Image.class.getClassLoader().getResourceAsStream(path);
+			InputStream inputStream = ImageCache.class.getClassLoader().getResourceAsStream(path);
 
 			assert inputStream != null;
 			return ImageIO.read(inputStream);

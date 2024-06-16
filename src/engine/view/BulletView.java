@@ -1,8 +1,8 @@
-package View;
+package engine.view;
 
-import Entity.Bullet;
-import MVC.Renderer.Image;
-import MVC.View;
+import engine.entity.Bullet;
+import service.ImageCache;
+import mvc.View;
 
 import java.awt.*;
 
@@ -29,6 +29,6 @@ public class BulletView extends View {
 	public void draw(Graphics2D g2) {
 		Graphics2D g = (Graphics2D) g2.create();
 		g.translate(x, y);
-		g.drawImage(Image.get("shot"), -6, -6, null);
+		g.drawImage(ImageCache.get("shot"), -6, -6, null);
 	}
 }

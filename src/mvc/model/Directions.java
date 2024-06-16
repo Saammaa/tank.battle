@@ -1,4 +1,4 @@
-package MVC.Model;
+package mvc.model;
 
 public enum Directions {
     UP(0),

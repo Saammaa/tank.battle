@@ -1,4 +1,4 @@
-package MVC;
+package mvc;
 
 public class Entity {
 	public View view;

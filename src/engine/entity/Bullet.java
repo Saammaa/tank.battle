@@ -1,7 +1,7 @@
-package Entity;
+package engine.entity;
 
-import MVC.Entity;
-import View.BulletView;
+import mvc.Entity;
+import engine.view.BulletView;
 
 public class Bullet extends Entity {
     public Tank shooterTank;

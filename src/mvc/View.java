@@ -1,4 +1,4 @@
-package MVC;
+package mvc;
 
 import java.awt.*;
 
@@ -44,6 +44,11 @@ public class View {
 	public void moveTowards(double direction, double len) {
 		x = x + len * Math.cos((direction - 90) * Math.PI / 180);
 		y = y + len * Math.sin((direction - 90) * Math.PI / 180);
+	}
+
+	public void readyToMove(double direction) {
+		this.moving = true;
+		this.direction = direction;
 	}
 
 	/**

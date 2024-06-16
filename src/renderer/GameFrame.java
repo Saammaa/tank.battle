@@ -1,13 +1,13 @@
-package MVC.Renderer;
+package renderer;
 
 import javax.swing.*;
 
-import MVC.Model.Battleground;
+import data.Battleground;
 
-public class Content extends JFrame {
-	Battleground battle;
+public class GameFrame extends JFrame {
+	Battleground battleData;
 
-	Panel panel = new Panel();
+	GamePanel gamePanel = new GamePanel();
 
 	public int width = 860;
 	public int height = 640;
@@ -22,25 +22,27 @@ public class Content extends JFrame {
 	/**
 	 * 初始化显示组件
 	 *
-	 * @param battle 数据区引用
+	 * @param battleData 数据区引用
 	 */
-	public Content(Battleground battle) {
-		this.battle = battle;
-		panel.setWarData(battle);
+	public GameFrame(Battleground battleData) {
+		this.battleData = battleData;
+		gamePanel.loadBattlegroundData(battleData);
 
 		// 初始化窗口
-		this.setSize(width, height);
-		this.setLocationRelativeTo(null);
-		this.setTitle("坦克大战");
-		this.setVisible(true);
-		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		this.add(panel);
+		this.setSize( width, height );
+		this.setLocationRelativeTo( null );
+		this.setTitle( "Tank.battle, by yours, Saammaa" );
+		this.setVisible( true );
+		this.setDefaultCloseOperation( JFrame.EXIT_ON_CLOSE );
+
+		this.add(gamePanel);
 
 		int contentPaneWidth = this.getContentPane().getSize().width;
 		int contentPanelHeight = this.getContentPane().getSize().height;
 
 		int cw = width - contentPaneWidth;
 		int ch = height - contentPanelHeight;
+
 		this.setSize(width + cw, height + ch);
 	}
 
@@ -59,7 +61,7 @@ public class Content extends JFrame {
 			_dt = 0f;
 		}
 
-		panel.setFrameRate(_frameRate);
-		panel.repaint();
+		gamePanel.setFrameRate(_frameRate);
+		gamePanel.repaint();
 	}
 }

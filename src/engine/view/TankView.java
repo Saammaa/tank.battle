@@ -1,15 +1,16 @@
-package View;
+package engine.view;
 
-import Entity.Team;
-import MVC.View;
+import engine.entity.Team;
+import mvc.View;
+import service.ImageCache;
 
 import java.awt.*;
 
 public class TankView extends View {
-	private final Entity.Tank tank;
+	private final engine.entity.Tank tank;
 
 	public TankView(
-			Entity.Tank tank,
+			engine.entity.Tank tank,
 			double x,
 			double y,
 			double direction,
@@ -36,13 +37,13 @@ public class TankView extends View {
 		java.awt.Image imageB = null;
 
 		if (this.tank.team == Team.RED.ordinal()) {
-			imageA = MVC.Renderer.Image.get("tank_red");
-			imageB = MVC.Renderer.Image.get("turret_red");
+			imageA = ImageCache.get("tank_red");
+			imageB = ImageCache.get("turret_red");
 		}
 
 		if (this.tank.team == Team.BLUE.ordinal()) {
-			imageA = MVC.Renderer.Image.get("tank_blue");
-			imageB = MVC.Renderer.Image.get("turret_blue");
+			imageA = ImageCache.get("tank_blue");
+			imageB = ImageCache.get("turret_blue");
 		}
 
 		Graphics2D g = (Graphics2D) g2.create();
