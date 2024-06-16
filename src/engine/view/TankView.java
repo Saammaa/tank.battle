@@ -1,7 +1,7 @@
 package engine.view;
 
-import engine.entity.Team;
 import mvc.View;
+import engine.entity.Team;
 import service.ImageCache;
 
 import java.awt.*;
@@ -21,11 +21,11 @@ public class TankView extends View {
 	}
 
 	public void update(double timeFlaps) {
-		if (destroyed) return;
+		if (this.destroyed) return;
 
 		this.tank.recoverHealth();
 
-		if (moving) {
+		if (this.moving) {
 			double len = speed * timeFlaps;
 			this.tank.moveSteps++;
 			this.moveTowards(direction, len);

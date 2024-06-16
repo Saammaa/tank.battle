@@ -19,9 +19,9 @@ public class Inspector {
 
 	Boolean useTotalMouseControl;
 
-	public Inspector() {
-		this.app = App.getInstance();
-		this.useTotalMouseControl = app.options.getBoolOption("useTotalMouseControl");
+	public Inspector(App app) {
+		this.app = app;
+		this.useTotalMouseControl = this.app.options.getBoolOption("useTotalMouseControl");
 
 		this.setupBaseMouseAdaptor();
 		this.setupKeyListener();
@@ -40,7 +40,9 @@ public class Inspector {
 	}
 
 	private void setupBaseMouseAdaptor() {
-		Tank player = this.app.getPlayer();
+		App app = this.app;
+		Tank player = app.getPlayer();
+
 		Boolean totalMouseControl = this.useTotalMouseControl;
 
 		this.baseMouseAdapter = new MouseAdapter() {
@@ -69,13 +71,14 @@ public class Inspector {
 					return;
 				}
 
-				app.battle.fireBullet( player, 200 );
+				app.battle.createBullet( player, 200 );
 			}
 		};
 	}
 
 	private void setupKeyListener() {
-		Tank player = this.app.getPlayer();
+		App app = this.app;
+		Tank player = app.getPlayer();
 
 		this.keyAdapter = new KeyAdapter() {
 			public void keyPressed(KeyEvent e) {
@@ -98,7 +101,7 @@ public class Inspector {
 						player.view.readyToMove(Directions.RIGHT.getAngleValue());
 						break;
 					case KeyEvent.VK_SPACE:
-						app.battle.fireBullet(player, 200);
+						app.battle.createBullet(player, 200);
 						break;
 				}
 			}

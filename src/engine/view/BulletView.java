@@ -1,8 +1,8 @@
 package engine.view;
 
+import mvc.View;
 import engine.entity.Bullet;
 import service.ImageCache;
-import mvc.View;
 
 import java.awt.*;
 

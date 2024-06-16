@@ -26,7 +26,7 @@ public class Tank extends Entity {
 			int team
 	) {
 		this.team = team;
-		this.speed = 200;
+		this.speed = 160;
 		this.maxHealth = 200;
 
 		this.health = health;
