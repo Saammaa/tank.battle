@@ -26,6 +26,11 @@ public class Battleground {
 		this.tanks.add(playerTank);
 	}
 
+	public void fireBullet( Tank shooter, double bulletSpeed ) {
+		Bullet bullet = new Bullet( shooter, bulletSpeed );
+		this.bullets.add( bullet );
+	}
+
 	/**
 	 * 增加一辆敌方坦克。
 	 *

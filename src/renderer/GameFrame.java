@@ -35,7 +35,7 @@ public class GameFrame extends JFrame {
 		this.setVisible( true );
 		this.setDefaultCloseOperation( JFrame.EXIT_ON_CLOSE );
 
-		this.add(gamePanel);
+		this.add( gamePanel );
 
 		int contentPaneWidth = this.getContentPane().getSize().width;
 		int contentPanelHeight = this.getContentPane().getSize().height;

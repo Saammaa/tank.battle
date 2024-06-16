@@ -40,6 +40,10 @@ public class Options {
 		}
 	}
 
+	public boolean getBoolOption(String key) {
+		return this.getIntOption(key) == 1;
+	}
+
 	public double getDoubleOption(String key) {
 		String value = this.getOption(key);
 		try {
