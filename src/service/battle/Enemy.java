@@ -114,7 +114,7 @@ public class Enemy {
 		timer = new Timer();
 		TimerTask task = new TimerTask() {
 			public void run() {
-				if (app.battle.getTanks().size() < 5 + 1) addRandom();
+				if (app.battle.getTanks().size() < 5) addRandom();
 			}
 		};
 

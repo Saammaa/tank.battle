@@ -20,7 +20,7 @@ public class GameFrame extends JFrame {
 	private float _frameRate = 0.0f;
 
 	/**
-	 * 初始化显示组件
+	 * 初始化显示组件。
 	 *
 	 * @param battleData 数据区引用
 	 */

@@ -15,6 +15,8 @@ public class Entity {
 
 	public double healthRecoverySpeed;
 
+	public boolean tough;
+
 	public boolean moving;
 
 	public void damage() {}
