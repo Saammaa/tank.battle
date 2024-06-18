@@ -36,5 +36,7 @@ public class ImageCache {
 		load("turret_blue", "Assets/tank_turret_blue.png" );
 		load("turret_red",	"Assets/tank_turret_red.png" );
 		load("shot",		"Assets/ammo.png" );
+
+		load("block_river","Assets/blocks/river.png");
 	}
 }
