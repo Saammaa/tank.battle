@@ -3,7 +3,7 @@ package engine.entity;
 import mvc.Entity;
 import engine.view.BulletView;
 
-public class Bullet extends Entity {
+public class Bullet extends Entity<BulletView> {
     public Tank shooterTank;
 
     /**
@@ -13,6 +13,8 @@ public class Bullet extends Entity {
      * @param speed         子弹速度
      */
     public Bullet(Tank shooterTank, double speed) {
+        this.type = "projectile";
+
         // 初始化伤害与速度属性
         this.speed = speed;
         this.damage = 20.0;

@@ -1,7 +1,9 @@
 package mvc;
 
-public class Entity {
-	public View view;
+public abstract class Entity<T extends View>  {
+	public T view;
+
+	public String type = "block";
 
 	public double direction;
 
@@ -22,6 +24,10 @@ public class Entity {
 	public void damage() {}
 
 	public void recover() {}
+
+	public T getView() {
+		return this.view;
+	}
 
 	public boolean isDestroyed() {
 		if (this.view != null) {

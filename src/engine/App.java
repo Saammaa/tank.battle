@@ -2,7 +2,9 @@ package engine;
 
 import data.*;
 import service.*;
+
 import engine.entity.*;
+import engine.entity.block.*;
 
 import renderer.GameFrame;
 
@@ -23,6 +25,8 @@ public class App {
 		this.gameFrame	= new GameFrame(this.battle);
 
 		this.playerInit();
+		this.terrainInit();
+
 		this.gameService = new Game(this);
 	}
 
@@ -44,5 +48,10 @@ public class App {
 				this.options.getDoubleOption("playerRecoverSpeed"),
 				Team.RED.ordinal()
 		));
+	}
+
+	public void terrainInit() {
+		this.battle.blocks.add(new River(0, 0));
+		this.battle.blocks.add(new River(200, 400));
 	}
 }

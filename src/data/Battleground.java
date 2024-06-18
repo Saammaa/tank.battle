@@ -1,5 +1,6 @@
 package data;
 
+import mvc.Entity;
 import engine.entity.*;
 
 import java.util.HashSet;
@@ -8,6 +9,8 @@ public class Battleground {
 	public HashSet<Tank> tanks = new HashSet<>();
 
 	public HashSet<Bullet> bullets = new HashSet<>();
+
+	public HashSet<Entity> blocks = new HashSet<>();
 
 	public Tank player;
 

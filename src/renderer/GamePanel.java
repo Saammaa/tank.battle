@@ -1,5 +1,6 @@
 package renderer;
 
+import mvc.Entity;
 import engine.entity.*;
 import data.Battleground;
 
@@ -29,12 +30,19 @@ public class GamePanel extends JPanel {
 
         // 令每个游戏元素节点自我绘制
         if ( battleData != null ) {
+            // TODO：形参化类的原始使用。避免出现此情况。
+            for ( Entity block: battleData.blocks ) {
+                if ( block != null && block.view != null ) {
+                    block.view.draw(graphics2D);
+                }
+            }
+
             for ( Tank tank : battleData.tanks ) tank.view.draw(graphics2D);
             for ( Bullet bullet : battleData.bullets ) bullet.view.draw(graphics2D);
         }
 
         // 显示帧率
-        String frameString = String.format("fps:%.2f", frameRate);
+        String frameString = String.format("FPS: %.2f", frameRate);
         graphics2D.drawString(frameString, 10, 15);
     }
 }

@@ -3,14 +3,12 @@ package engine.entity;
 import mvc.Entity;
 import engine.view.TankView;
 
-public class Tank extends Entity {
+public class Tank extends Entity<TankView> {
 	// 炮筒方向
 	public double turretDirection;
 
 	// 移动步长
 	public long moveSteps = 0;
-
-	public TankView view;
 
 	/**
 	 * 队伍，一红二蓝
@@ -25,6 +23,8 @@ public class Tank extends Entity {
 			double healthRecoverySpeed,
 			int team
 	) {
+		this.type = "tank";
+
 		this.team = team;
 		this.speed = 160;
 		this.maxHealth = 200;
