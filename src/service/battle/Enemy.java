@@ -17,8 +17,12 @@ public class Enemy {
 
 	private Timer timer;
 
+	private boolean allowFireBullets;
+
 	public Enemy(App app) {
 		this.app = app;
+		this.allowFireBullets = true;
+
 		this.startAddingTanksPeriodically();
 	}
 
@@ -56,6 +60,14 @@ public class Enemy {
 		);
 	}
 
+	public void disableFire() {
+		this.allowFireBullets = false;
+	}
+
+	public void enableFire() {
+		this.allowFireBullets = true;
+	}
+
 	private void updateEnemies() {
 		Tank player = this.app.getPlayer();
 
@@ -81,7 +93,7 @@ public class Enemy {
 				}
 
 				// 运动几步随机开炮，50 应设置为参数或者常量
-				if (tank.moveSteps > 50) {
+				if (tank.moveSteps > 50 && this.allowFireBullets) {
 					double random = Math.random() * 360;
 
 					tank.view.setDirection(random);

@@ -25,30 +25,21 @@ public class Updater {
 
 	private void updateTankPositions() {
 		for (Tank tank : this.app.battle.getTanks()) {
-			// 假设坦克的下一步位置，这里简化处理，不考虑坦克的朝向和速度
-			float nextX = (float) (tank.view.x + 10);
-			float nextY = (float) (tank.view.y + 10);
-
-			boolean canMove = true;
-
 			for (Entity block : this.app.battle.blocks) {
-				if ("river".equals(block.type)) {
-					// 检查坦克的下一步位置是否会进入河流图块的区域
-					if (nextX < block.view.x + 64 &&
-								nextX + 64 > block.view.x &&
-								nextY < block.view.x + 64 &&
-								nextY + 64 > block.view.y) {
-						// 如果是，则阻止移动
-						canMove = false;
-						break;
-					}
+				if (!tank.view.isEnteredTargetArea(block.view)) {
+					tank.view.setVisible(true);
+					continue;
+				}
+
+				if ("river".equals(block.blockType)) {
+					tank.view.setDirection(tank.view.direction + 90);
+					break;
+				} else if ("grass".equals(block.blockType)) {
+					tank.view.setVisible(false);
 				}
 			}
 
-			// 如果坦克可以移动，则更新位置
-			if (canMove) {
-				tank.view.update(this.timeFlaps);
-			}
+			tank.view.update(this.timeFlaps);
 		}
 	}
 
@@ -66,6 +57,8 @@ public class Updater {
 	private void detectCollision() {
 		for (Bullet bullet : this.app.battle.getBullets()) {
 			for (Tank tank : this.app.battle.getTanks()) {
+				if (!tank.view.isVisible()) continue;
+				
 				if (tank != bullet.shooterTank && bullet.view.getDistanceTo(tank.view) < 20) {
 					bullet.view.destroy();
 					tank.damage(bullet.damage);

@@ -18,6 +18,9 @@ public class TankView extends View {
 	) {
 		super(x, y, direction, speed);
 		this.tank = tank;
+
+		this.width = 20;
+		this.height = 20;
 	}
 
 	public void update(double timeFlaps) {
@@ -39,9 +42,7 @@ public class TankView extends View {
 		if (this.tank.team == Team.RED.ordinal()) {
 			imageA = ImageCache.get("tank_red");
 			imageB = ImageCache.get("turret_red");
-		}
-
-		if (this.tank.team == Team.BLUE.ordinal()) {
+		} else if (this.tank.team == Team.BLUE.ordinal()) {
 			imageA = ImageCache.get("tank_blue");
 			imageB = ImageCache.get("turret_blue");
 		}
@@ -49,17 +50,19 @@ public class TankView extends View {
 		Graphics2D g = (Graphics2D) g2.create();
 		g.translate(x, y);
 
-		g.rotate(Math.toRadians(direction));
-		g.drawImage(imageA, -18, -19, null);
-		g.rotate(Math.toRadians(-direction));
-
 		g.drawRect(-22, -34, 44, 8);
 		g.setColor(Color.RED);
 
 		int currentHPWidth = (int) (43.08 * (this.tank.health / this.tank.maxHealth));
-
 		g.fillRect(-21, -33, currentHPWidth, 7);
-		g.rotate(Math.toRadians(this.tank.turretDirection));
-		g.drawImage(imageB, -32, -32, null);
+
+		if (this.isVisible()) {
+			g.rotate(Math.toRadians(direction));
+			g.drawImage(imageA, -18, -19, 40, 40, null);
+			g.rotate(Math.toRadians(-direction));
+
+			g.rotate(Math.toRadians(this.tank.turretDirection));
+			g.drawImage(imageB, -32, -32, null);
+		}
 	}
 }

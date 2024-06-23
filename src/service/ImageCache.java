@@ -38,5 +38,6 @@ public class ImageCache {
 		load("shot",		"Assets/ammo.png" );
 
 		load("block_river","Assets/blocks/river.png");
+		load("block_grass","Assets/blocks/grass.jpg");
 	}
 }

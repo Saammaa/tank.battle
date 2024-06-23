@@ -5,6 +5,8 @@ public abstract class Entity<T extends View>  {
 
 	public String type = "block";
 
+	public String blockType;
+
 	public double direction;
 
 	public double speed;
@@ -27,6 +29,14 @@ public abstract class Entity<T extends View>  {
 
 	public T getView() {
 		return this.view;
+	}
+
+	public boolean isMoving() {
+		return this.view.moving;
+	}
+
+	public void stop() {
+		this.view.setMoving(false);
 	}
 
 	public boolean isDestroyed() {

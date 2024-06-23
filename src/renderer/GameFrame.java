@@ -1,13 +1,22 @@
 package renderer;
 
-import javax.swing.*;
-
+import engine.App;
 import data.Battleground;
 
+import javax.swing.*;
+
 public class GameFrame extends JFrame {
+	App app;
+
 	Battleground battleData;
 
-	GamePanel gamePanel = new GamePanel();
+	GamePanel gamePanel;
+
+	public JButton settingsButton;
+
+	public JButton startButton;
+
+	public JButton saveButton;
 
 	public int width = 860;
 	public int height = 640;
@@ -21,29 +30,63 @@ public class GameFrame extends JFrame {
 
 	/**
 	 * 初始化显示组件。
-	 *
-	 * @param battleData 数据区引用
 	 */
-	public GameFrame(Battleground battleData) {
-		this.battleData = battleData;
-		gamePanel.loadBattlegroundData(battleData);
+	public GameFrame(App app) {
+		this.app = app;
+		this.battleData = this.app.battle;
 
-		// 初始化窗口
-		this.setSize( width, height );
-		this.setLocationRelativeTo( null );
-		this.setTitle( "Tank.battle, by yours, Saammaa" );
-		this.setVisible( true );
-		this.setDefaultCloseOperation( JFrame.EXIT_ON_CLOSE );
+		this.setLayout(null);
+		this.setSize(width, height);
+		this.setLocationRelativeTo(null);
+		this.setTitle("Tank.battle, by yours, Saammaa");
+		this.setVisible(true);
+		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
-		this.add( gamePanel );
+		this.setupGamePanel();
+		this.setupUtilityButtons();
+		this.setupSettingsButton();
 
+		this.setupFrameSize();
+	}
+
+	private void setupUtilityButtons() {
+		this.startButton = new JButton("开始");
+
+		startButton.setBounds(120, 0, 100, 30);
+		startButton.addActionListener(e -> {
+			app.gameService.start();
+			startButton.setEnabled(false);
+		});
+
+		this.add(startButton);
+	}
+
+	private void setupSettingsButton() {
+		this.settingsButton = new JButton("设置");
+
+		settingsButton.setBounds(0, 0, 100, 30);
+		settingsButton.addActionListener(e -> this.openSettingsWindow());
+
+		this.add(settingsButton);
+	}
+
+	private void setupGamePanel() {
+		this.gamePanel = new GamePanel();
+
+		gamePanel.loadBattlegroundData(this.battleData);
+		gamePanel.setBounds(0, 30, this.width, this.height - 30);
+
+		this.add(gamePanel);
+	}
+
+	private void setupFrameSize() {
 		int contentPaneWidth = this.getContentPane().getSize().width;
 		int contentPanelHeight = this.getContentPane().getSize().height;
 
-		int cw = width - contentPaneWidth;
-		int ch = height - contentPanelHeight;
+		int contentWidth = this.width - contentPaneWidth;
+		int contentHeight = this.height - contentPanelHeight;
 
-		this.setSize(width + cw, height + ch);
+		this.setSize(this.width + contentWidth, this.height + contentHeight);
 	}
 
 	/**
@@ -63,5 +106,12 @@ public class GameFrame extends JFrame {
 
 		gamePanel.setFrameRate(_frameRate);
 		gamePanel.repaint();
+	}
+
+	private void openSettingsWindow() {
+		GameSettings settingsWindow = new GameSettings(this.app);
+
+		settingsWindow.setModal(true);
+		settingsWindow.setVisible(true);
 	}
 }

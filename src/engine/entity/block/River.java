@@ -5,7 +5,7 @@ import engine.view.block.RiverView;
 
 public class River extends Entity<RiverView> {
 	public River(double x, double y) {
-		this.type = "river";
+		this.blockType = "river";
 		this.view = new RiverView(x, y);
 	}
 }

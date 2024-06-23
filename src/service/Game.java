@@ -13,13 +13,26 @@ public class Game extends Thread {
 
 	private final Inspector inspectorService;
 
+	public boolean running;
+
 	public Game(App app) {
 		this.app = app;
+		this.running = true;
 
 		this.inspectorService = new Inspector(app);
 
 		this.enemyService = new Enemy(app);
 		this.updaterService = new Updater(app);
+	}
+
+	public void pause() {
+		this.running = false;
+		this.enemyService.disableFire();
+	}
+
+	public void recover() {
+		this.running = true;
+		this.enemyService.enableFire();
 	}
 
 	public void run() {
@@ -40,8 +53,8 @@ public class Game extends Thread {
 			} else {
 				lastUpdate = currentTime;
 
-				// 流逝时间
-				float dt = _time * 0.001f;
+				// 根据this.running的状态调整dt的值
+				float dt = this.running ? (_time * 0.001f) : (_time * 0.001f / 25);
 
 				this.enemyService.run();
 				this.updaterService.run(dt);
@@ -50,7 +63,6 @@ public class Game extends Thread {
 			}
 		}
 	}
-
 	public Inspector getInspectorService() {
 		return this.inspectorService;
 	}
